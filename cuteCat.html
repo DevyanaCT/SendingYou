@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cute Cat Cheerleader</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .heart {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 100px;
+            height: 160px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #ffa5c8 100%);
+            border-radius: 100px 100px 0 0;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);
+        }
+
+        .heart::before {
+            left: 50px;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+
+        .heart::after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.1);
+            }
+            50% {
+                transform: scale(1);
+            }
+        }
+
+        .cat-container {
+            position: relative;
+            z-index: 10;
+        }
+
+        .cat {
+            font-size: 80px;
+            animation: bounce 2s ease-in-out infinite;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0) rotate(-5deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        .message {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 400px;
+            animation: fadeSlideIn 0.8s ease-out;
+        }
+
+        .message h2 {
+            color: #667eea;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .message p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sparkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkleFloat 3s ease-in-out infinite;
+            opacity: 0;
+        }
+
+        @keyframes sparkleFloat {
+            0%, 100% {
+                opacity: 0;
+                transform: translateY(0) scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-100px) scale(1);
+            }
+        }
+
+        .paw-prints {
+            position: absolute;
+            font-size: 30px;
+            opacity: 0.3;
+            animation: pawFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes pawFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(10deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sparkles" id="sparkles"></div>
+    
+    <div class="container">
+        <div class="paw-prints" style="top: 10%; left: 10%;">🐾</div>
+        <div class="paw-prints" style="top: 20%; right: 15%; animation-delay: 1s;">🐾</div>
+        <div class="paw-prints" style="bottom: 15%; left: 20%; animation-delay: 2s;">🐾</div>
+        <div class="paw-prints" style="bottom: 25%; right: 10%; animation-delay: 1.5s;">🐾</div>
+        
+        <div class="heart"></div>
+        
+        <div class="cat-container">
+            <div class="cat">😺</div>
+        </div>
+        
+        <div class="message">
+            <h2>You're Paw-some! 🎉</h2>
+            <p id="motivationText">You're doing great! Keep going, and remember that every step forward is progress. I believe in you!</p>
+        </div>
+    </div>
+
+    <script>
+        const motivationalMessages = [
+            "You're doing great! Keep going, and remember that every step forward is progress. I believe in you!",
+            "You're absolutely amazing! Don't give up - you've got this! 💪",
+            "Meow-velous work! You're stronger than you think! 🌟",
+            "Every day you're getting better! Keep up the fantastic work!",
+            "You're paw-sitively incredible! Believe in yourself! ✨",
+            "Take it one step at a time - you're doing wonderfully!",
+            "You've got the purr-fect spirit! Never stop believing! 🌈"
+        ];
+
+        let currentMessageIndex = 0;
+        const messageElement = document.getElementById('motivationText');
+
+        function changeMessage() {
+            messageElement.style.opacity = '0';
+            setTimeout(() => {
+                currentMessageIndex = (currentMessageIndex + 1) % motivationalMessages.length;
+                messageElement.textContent = motivationalMessages[currentMessageIndex];
+                messageElement.style.opacity = '1';
+            }, 300);
+        }
+
+        messageElement.style.transition = 'opacity 0.3s ease';
+        setInterval(changeMessage, 5000);
+
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.animationDelay = Math.random() * 2 + 's';
+            document.getElementById('sparkles').appendChild(sparkle);
+            
+            setTimeout(() => sparkle.remove(), 3000);
+        }
+
+        setInterval(createSparkle, 500);
+
+        for (let i = 0; i < 20; i++) {
+            setTimeout(createSparkle, i * 100);
+        }
+    </script>
+</body>
+</html>
